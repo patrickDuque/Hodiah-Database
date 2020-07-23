@@ -76,7 +76,12 @@ function App() {
     let filteredItems = items.filter(item => {
       return item.itemName.toLowerCase().includes(search.toLowerCase());
     });
-    table = <Table items={filteredItems} />;
+
+    if (filteredItems.length === 0) {
+      table = <h1 style={{ textAlign: 'center' }}>No item in the database...</h1>;
+    } else {
+      table = <Table items={filteredItems} />;
+    }
   }
 
   return (
