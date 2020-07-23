@@ -9,6 +9,7 @@ export default props => {
       storeName={item.storeName}
       sellingPrice={item.sellingPrice}
       buyingPrice={item.buyingPrice}
+			contactNumber={item.contactNumber}
     />
   ));
 
@@ -21,6 +22,7 @@ export default props => {
             <th>Store Name</th>
             <th>Buying Price</th>
             <th>Selling Price</th>
+            <th>Contact Number</th>
           </tr>
         </thead>
         <tbody>{tableItems}</tbody>
