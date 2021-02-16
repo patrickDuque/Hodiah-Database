@@ -16,7 +16,7 @@ export default props => {
 	return (
 		<React.Fragment>
 			<Modal show={show} removeModal={() => setShow(false)}>
-				<div className='uk-margin-top'>Are you sure you want to delete this item?</div>
+				<h3 className='uk-margin-top'>Are you sure you want to delete this item?</h3>
 				<div className='uk-flex uk-flex-right uk-margin-top'>
 					<div className='uk-margin-right'>
 						<CustomButton danger clicked={() => setShow(false)}>
