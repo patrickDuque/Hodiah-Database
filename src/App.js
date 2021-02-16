@@ -51,6 +51,20 @@ function App() {
 		});
 	};
 
+	const deleteItemHandler = async id => {
+		try {
+			await axios.delete(`/items/${id}.json`);
+			const data = await axios.get('/items.json');
+			const newArr = [];
+			for (let key in data.data) {
+				newArr.push({ ...data.data[key], id: key });
+			}
+			setItems(newArr);
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
 	const searchItemHandler = e => {
 		setSearch(e.target.value);
 	};
@@ -65,7 +79,7 @@ function App() {
 		if (filteredItems.length === 0) {
 			table = <h1 style={{ textAlign: 'center' }}>No item in the database...</h1>;
 		} else {
-			table = <Table items={filteredItems} />;
+			table = <Table items={filteredItems} delete={deleteItemHandler} />;
 		}
 	}
 

@@ -2,16 +2,20 @@ import React from 'react';
 import TableRow from './TableRow';
 
 export default props => {
-	const tableItems = props.items.map(item => (
-		<TableRow
-			key={item.id}
-			itemName={item.itemName}
-			storeName={item.storeName}
-			sellingPrice={item.sellingPrice}
-			buyingPrice={item.buyingPrice}
-			contactNumber={item.contactNumber}
-		/>
-	));
+	const tableItems = props.items.map(item => {
+		return (
+			<TableRow
+				key={item.id}
+				itemName={item.itemName}
+				storeName={item.storeName}
+				sellingPrice={item.sellingPrice}
+				buyingPrice={item.buyingPrice}
+				contactNumber={item.contactNumber}
+				id={item.id}
+				deleteItem={props.delete}
+			/>
+		);
+	});
 
 	return (
 		<div id='Table' className='uk-container uk-margin-top uk-padding-remove'>
@@ -23,8 +27,6 @@ export default props => {
 						<th>Buying Price</th>
 						<th>Selling Price</th>
 						<th>Contact Number</th>
-						<th />
-						<th />
 					</tr>
 				</thead>
 				<tbody>{tableItems}</tbody>
