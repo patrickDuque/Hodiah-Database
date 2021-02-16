@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import CustomButton from './UI/CustomButton';
 import Modal from './UI/Modal';
+import Form from './Form';
 
 export default props => {
+	const { itemName, storeName, sellingPrice, buyingPrice, contactNumber, id } = props;
 	const [ show, setShow ] = useState(false);
+	const [ showEdit, setShowEdit ] = useState(false);
 
 	const handleDeleteItem = () => {
-		props.deleteItem(props.id);
+		props.deleteItem(id);
 		setShow(false);
 	};
 
@@ -27,14 +30,25 @@ export default props => {
 					</div>
 				</div>
 			</Modal>
-			<tr>
-				<td className='TableRow'>{props.itemName}</td>
-				<td className='TableRow'>{props.storeName}</td>
-				<td>&#8369;{props.buyingPrice}</td>
-				<td>&#8369;{props.sellingPrice}</td>
-				<td>{props.contactNumber}</td>
+			<Modal show={showEdit} removeModal={() => setShowEdit(false)}>
+				<Form
+					editItem={props.editItem}
+					itemName={itemName}
+					storeName={storeName}
+					sellingPrice={sellingPrice}
+					buyingPrice={buyingPrice}
+					id={id}
+					contactNumber={contactNumber}
+				/>
+			</Modal>
+			<tr className='TableRow'>
+				<td>{itemName}</td>
+				<td>{storeName}</td>
+				<td>&#8369;{buyingPrice}</td>
+				<td>&#8369;{sellingPrice}</td>
+				<td>{contactNumber}</td>
 				<td>
-					<CustomButton>EDIT</CustomButton>
+					<CustomButton clicked={() => setShowEdit(true)}>EDIT</CustomButton>
 				</td>
 				<td>
 					<CustomButton clicked={() => setShow(true)} danger>

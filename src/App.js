@@ -17,15 +17,7 @@ function App() {
 	const [ modal, setModal ] = useState(false);
 
 	useEffect(() => {
-		setLoading(true);
-		axios.get('/items.json').then(data => {
-			const fetchedArr = [];
-			for (let key in data.data) {
-				fetchedArr.push({ ...data.data[key], id: key });
-			}
-			setItems(fetchedArr);
-			setLoading(false);
-		});
+		getItem();
 	}, []);
 
 	const showModalHandler = () => {
@@ -36,31 +28,55 @@ function App() {
 		setModal(false);
 	};
 
-	const addItemHandler = item => {
+	const getItem = async () => {
 		setLoading(true);
-		axios.post('/items.json', item).then(res => {
+		try {
+			const itemsArr = await axios.get('/items.json');
+			const fetchedArr = [];
+			for (let key in itemsArr.data) {
+				fetchedArr.push({ ...itemsArr.data[key], id: key });
+			}
+			setItems(fetchedArr);
 			setLoading(false);
-			axios.get('/items.json').then(data => {
-				const fetchedArr = [];
-				for (let key in data.data) {
-					fetchedArr.push({ ...data.data[key], id: key });
-				}
-				setItems(fetchedArr);
-			});
+		} catch (error) {
+			setLoading(false);
+		}
+	};
+
+	const addItemHandler = async item => {
+		setLoading(true);
+		try {
+			await axios.post('/items.json', item);
+			getItem();
+			setLoading(false);
 			hideModalHandler();
-		});
+		} catch (error) {
+			setLoading(false);
+		}
 	};
 
 	const deleteItemHandler = async id => {
+		setLoading(true);
 		try {
 			await axios.delete(`/items/${id}.json`);
-			const data = await axios.get('/items.json');
-			const newArr = [];
-			for (let key in data.data) {
-				newArr.push({ ...data.data[key], id: key });
-			}
-			setItems(newArr);
+			getItem();
+			setLoading(false);
 		} catch (error) {
+			setLoading(false);
+			console.log(error.message);
+		}
+	};
+
+	const editItemHandler = async (item, id) => {
+		setLoading(true);
+		try {
+			console.log(item);
+			const data = await axios.put(`/items/${id}.json`, item);
+			console.log(data);
+			getItem();
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
 			console.log(error.message);
 		}
 	};
@@ -79,7 +95,7 @@ function App() {
 		if (filteredItems.length === 0) {
 			table = <h1 style={{ textAlign: 'center' }}>No item in the database...</h1>;
 		} else {
-			table = <Table items={filteredItems} delete={deleteItemHandler} />;
+			table = <Table items={filteredItems} delete={deleteItemHandler} edit={editItemHandler} />;
 		}
 	}
 
@@ -87,15 +103,15 @@ function App() {
 		<div id='App'>
 			<Header />
 			<SearchBox search={search} searchItem={searchItemHandler} />
-			{table}
-			<Modal removeModal={hideModalHandler} show={modal}>
-				{loading ? <Spinner /> : <Form addItem={addItemHandler} />}
-			</Modal>
 			<div className='uk-container uk-margin-top'>
 				<CustomButton clicked={showModalHandler}>
 					<span className='uk-margin-small-right' uk-icon='plus' />Add Item
 				</CustomButton>
 			</div>
+			{table}
+			<Modal removeModal={hideModalHandler} show={modal}>
+				{loading ? <Spinner /> : <Form addItem={addItemHandler} />}
+			</Modal>
 		</div>
 	);
 }

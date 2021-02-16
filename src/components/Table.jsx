@@ -13,6 +13,8 @@ export default props => {
 				contactNumber={item.contactNumber}
 				id={item.id}
 				deleteItem={props.delete}
+				editItem={props.edit}
+				item={item}
 			/>
 		);
 	});
@@ -27,6 +29,8 @@ export default props => {
 						<th>Buying Price</th>
 						<th>Selling Price</th>
 						<th>Contact Number</th>
+						<th />
+						<th />
 					</tr>
 				</thead>
 				<tbody>{tableItems}</tbody>
