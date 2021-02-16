@@ -69,6 +69,7 @@ export default props => {
 						id='buyingPrice'
 						type='number'
 						min='0'
+						step='0.01'
 					/>
 				</div>
 			</div>
@@ -84,6 +85,7 @@ export default props => {
 						id='sellingPrice'
 						type='number'
 						min='0'
+						step='0.01'
 					/>
 				</div>
 			</div>
