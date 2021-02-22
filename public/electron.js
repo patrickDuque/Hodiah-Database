@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
-// const iconPath = path.join(__dirname, 'build', 'icon.png');
 
 function createWindow() {
 	// Create the browser window.
@@ -10,8 +9,7 @@ function createWindow() {
 		height         : 600,
 		webPreferences : {
 			nodeIntegration : true
-		},
-		icon           : 'src/icon.png'
+		}
 	});
 
 	// and load the index.html of the app.
